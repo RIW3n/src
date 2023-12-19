@@ -1,0 +1,301 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="AMR" >
+
+    <xacro:property name="chassis_length" value="0.5"/>
+
+    <xacro:property name="chassis_width" value="0.3"/>
+    <xacro:property name="chassis_height" value="0.0025"/>
+
+    <xacro:property name="wheel_radius" value="0.045"/>
+    <xacro:property name="wheel_length" value="0.04"/>
+    <xacro:property name="top_offset" value="0.1"/>
+
+    <xacro:property name="bracket_length" value="0.04"/>
+
+    <xacro:property name="bracket_width" value="0.04"/>
+    <xacro:property name="bracket_height" value="0.002"/>
+
+    <xacro:property name="wheel_offset" value="0.01"/>
+
+
+    <material name="silver">
+        <color rgba="0.75 0.75 0.75 1.0"/>
+    </material>
+    <material name="black">
+        <color rgba="0.75 0.75 0.75 1.0"/>
+    </material>
+<link name="base_link"/>
+
+<joint name="world" type="fixed">
+    <parent link="base_link"/>
+    <child link="chassis_base"/>
+    <origin xyz="0.0 0.0 ${wheel_radius*2}" rpy="0.0 0.0 0.0"/>
+</joint>
+
+
+
+
+
+<link name="chassis_base">
+    <visual>
+        <geometry>
+            <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+        </geometry>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <material name= "silver"/>
+    </visual>
+    <collision>
+        <geometry>
+            <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+        </geometry>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <xacro:box m="1.0125" l="${chassis_length}" w="${chassis_width}" h="${chassis_height}"
+    xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    
+</link>
+
+<link name="chassis_top">
+    <visual>
+        <geometry>
+            <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+        </geometry>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <material name= "silver"/>
+    </visual>
+    <collision>
+        <geometry>
+            <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+        </geometry>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <xacro:box m="1.0125" l="${chassis_length}" w="${chassis_width}" h="${chassis_height}"
+    xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+</link>
+    
+    <joint name="base_top_joint" type="fixed">
+        <parent link="chassis_base"/>
+        <child link="chassis_top"/>
+        <origin xyz="0.0 0.0 ${top_offset}" rpy="0.0 0.0 0.0"/>
+    </joint>
+    
+    <link name="right_front_bracket_link">
+        <visual>
+            <geometry>
+                <box size="${bracket_length} ${bracket_width} ${bracket_height}"/>
+            </geometry>
+            <origin xyz="${bracket_length/2} 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <material name="black"/>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="${bracket_length} ${bracket_width} ${bracket_height}"/>
+            </geometry>
+            <origin xyz="${bracket_length/2} 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <xacro:box m="0.02" l="${bracket_length}" w="${bracket_width}" h="${bracket_height}"
+         xyz="${bracket_length/2} 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </link>
+
+    <joint name="base_right_front_bracket_joint" type="fixed">
+        <parent link="chassis_base"/>
+        <child link="right_front_bracket_link"/>
+        <origin xyz="${chassis_length/2} ${chassis_width/2 - bracket_length/2} 0" rpy="0 ${pi/2} 0"/>
+    </joint>
+
+
+    <link name="front_right_wheel_link">
+        <visual>
+            <geometry>
+                <cylinder radius="${wheel_radius}" length="${wheel_length}"/>
+            </geometry>
+            <origin xyz="0.0 0.0 ${wheel_length/2}" rpy="0.0 0.0 0.0"/>
+            <material name="black"/>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="${wheel_radius}" length="${wheel_length}"/>
+            </geometry>
+            <origin xyz="0.0 0.0 ${wheel_length/2}" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <xacro:cylinder m ="0.3" r="${wheel_radius}" h = "${wheel_length}"
+        xyz="0.0 0.0 ${wheel_length/2}" rpy="0.0 0.0 0.0"/>
+    </link>
+
+    <joint name="base_front_right_wheel_joint" type="continuous">
+        <parent link="right_front_bracket_link"/>
+        <child link="front_right_wheel_link"/>
+        <axis xyz="0 0 1"/>
+        <origin xyz="${bracket_length} 0.0 ${wheel_offset}" rpy="0.0 0.0 0.0"/>
+        
+    </joint>
+
+
+
+
+    <link name="right_back_bracket_link">
+        <visual>
+            <geometry>
+                <box size="${bracket_length} ${bracket_width} ${bracket_height}"/>
+            </geometry>
+            <origin xyz="${bracket_length/2} 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <material name="black"/>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="${bracket_length} ${bracket_width} ${bracket_height}"/>
+            </geometry>
+            <origin xyz="${bracket_length/2} 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <xacro:box m="0.02" l="${bracket_length}" w="${bracket_width}" h="${bracket_height}"
+        xyz="${bracket_length/2} 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </link>
+
+    <joint name="base_right_back_bracket_joint" type="fixed">
+        <parent link="chassis_base"/>
+        <child link="right_back_bracket_link"/>
+        <origin xyz="${chassis_length/2} ${-chassis_width/2 + bracket_length/2} 0" rpy="0 ${pi/2} 0"/>
+    </joint>
+    
+
+
+
+    <link name="back_right_wheel_link">
+        <visual>
+            <geometry>
+                <cylinder radius="${wheel_radius}" length="${wheel_length}"/>
+            </geometry>
+            <origin xyz="0.0 0.0 ${wheel_length/2}" rpy="0.0 0.0 0.0"/>
+            <material name="black"/>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="${wheel_radius}" length="${wheel_length}"/>
+            </geometry>
+            <origin xyz="0.0 0.0 ${wheel_length/2}" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <xacro:cylinder m ="0.3" r="${wheel_radius}" h = "${wheel_length}"
+        xyz="0.0 0.0 ${wheel_length/2}" rpy="0.0 0.0 0.0"/>
+    </link>
+
+    <joint name="base_back_right_wheel_joint" type="continuous">
+        <parent link="right_back_bracket_link"/>
+        <child link="back_right_wheel_link"/>
+        <axis xyz="0 0 1"/>
+        <origin xyz="${bracket_length} 0.0 ${wheel_offset}" rpy="0.0 0.0 0.0"/>
+        
+    </joint>
+
+
+
+    <link name="left_front_bracket_link">
+        <visual>
+            <geometry>
+                <box size="${bracket_length} ${bracket_width} ${bracket_height}"/>
+            </geometry>
+            <origin xyz="${bracket_length/2} 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <material name="black"/>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="${bracket_length} ${bracket_width} ${bracket_height}"/>
+            </geometry>
+            <origin xyz="${bracket_length/2} 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <xacro:box m="0.02" l="${bracket_length}" w="${bracket_width}" h="${bracket_height}"
+        xyz="${bracket_length/2} 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </link>
+
+    <joint name="base_left_front_bracket_joint" type="fixed">
+        <parent link="chassis_base"/>
+        <child link="left_front_bracket_link"/>
+        <origin xyz="${-chassis_length/2} ${chassis_width/2 - bracket_length/2} 0" rpy="0 ${pi/2} 0"/>
+    </joint>
+
+
+    <link name="front_left_wheel_link">
+        <visual>
+            <geometry>
+                <cylinder radius="${wheel_radius}" length="${wheel_length}"/>
+            </geometry>
+            <origin xyz="0.0 0.0 ${-wheel_length/2}" rpy="0.0 0.0 0.0"/>
+            <material name="black"/>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="${wheel_radius}" length="${wheel_length}"/>
+            </geometry>
+            <origin xyz="0.0 0.0 ${-wheel_length/2}" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <xacro:cylinder m ="0.3" r="${wheel_radius}" h = "${wheel_length}"
+        xyz="0.0 0.0 ${-wheel_length/2}" rpy="0.0 0.0 0.0"/>
+    </link>
+
+    <joint name="base_front_left_wheel_joint" type="continuous">
+        <parent link="left_front_bracket_link"/>
+        <child link="front_left_wheel_link"/>
+        <axis xyz="0 0 1"/>
+        <origin xyz="${bracket_length} 0.0 ${-wheel_offset}" rpy="0.0 0.0 0.0"/>
+        
+    </joint>
+
+
+
+
+    <link name="left_back_bracket_link">
+        <visual>
+            <geometry>
+                <box size="${bracket_length} ${bracket_width} ${bracket_height}"/>
+            </geometry>
+            <origin xyz="${bracket_length/2} 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <material name="black"/>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="${bracket_length} ${bracket_width} ${bracket_height}"/>
+            </geometry>
+            <origin xyz="${bracket_length/2} 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <xacro:box m="0.02" l="${bracket_length}" w="${bracket_width}" h="${bracket_height}"
+        xyz="${bracket_length/2} 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </link>
+
+    <joint name="base_left_back_bracket_joint" type="fixed">
+        <parent link="chassis_base"/>
+        <child link="left_back_bracket_link"/>
+        <origin xyz="${-chassis_length/2} ${-chassis_width/2 + bracket_length/2} 0" rpy="0 ${pi/2} 0"/>
+    </joint>
+
+    
+    
+    <link name="back_left_wheel_link">
+        <visual>
+            <geometry>
+                <cylinder radius="${wheel_radius}" length="${wheel_length}"/>
+            </geometry>
+            <origin xyz="0.0 0.0 ${-wheel_length/2}" rpy="0.0 0.0 0.0"/>
+            <material name="black"/>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="${wheel_radius}" length="${wheel_length}"/>
+            </geometry>
+            <origin xyz="0.0 0.0 ${-wheel_length/2}" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <xacro:cylinder m ="0.3" r="${wheel_radius}" h = "${wheel_length}"
+        xyz="0.0 0.0 ${-wheel_length/2}" rpy="0.0 0.0 0.0"/>
+    </link>
+
+    <joint name="base_back_left_wheel_joint" type="continuous">
+        <parent link="left_back_bracket_link"/>
+        <child link="back_left_wheel_link"/>
+        <axis xyz="0 0 1"/>
+        <origin xyz="${bracket_length} 0.0 ${-wheel_offset}" rpy="0.0 0.0 0.0"/>
+        
+    </joint>
+
+
+
+
+    
+</robot>

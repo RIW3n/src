@@ -1,27 +1,30 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-
+<xacro:property name="camera_length" value="0.04"/>
+<xacro:property name="camera_width" value="0.02"/>
+<xacro:property name="camera_height" value="0.035"/>
     <link name="camera_link">
         <visual>
             <geometry>
-                <box size="0.02 0.02 0.035"/>
+                <box size="${camera_length} ${camera_width} ${camera_height}"/>
             </geometry>
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 ${pi/2}"/>
             <material name="black">
                 <color rgba="0.0 0.0 0.0 1.0"/>
             </material>
         </visual>
         <collision>
             <geometry>
-                <box size="0.02 0.02 0.035"/>
+                <box size="${camera_length} ${camera_width} ${camera_height}"/>
             </geometry>
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 ${pi/2}"/>
         </collision>
-        <xacro:box m="0.2" l="0.02" w="0.02" h="0.035" xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <xacro:box m="0.2" l="0.02" w="0.02" h="0.035" xyz="0.0 0.0 0.0" rpy="0.0 0.0 ${pi/2}"/>
     </link>
     <joint name="base_top_camera_joint" type="fixed">
-        <origin xyz="0.25 0.0 0.0175" rpy="0.0 0.0 0.0"/>
-        <parent link="base_top_link"/>
+       <origin xyz="0.0 ${chassis_width/2} 0.0" rpy="0.0 0.0 ${pi/2}"/>
+       
+        <parent link="chassis_top"/>
         <child link="camera_link"/>
     </joint>
     <link name="camera_link_optical"/>

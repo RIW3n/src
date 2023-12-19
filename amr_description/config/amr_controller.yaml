@@ -1,0 +1,30 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100
+
+
+    joint_state_broadcaster:
+     type: joint_state_broadcaster/JointStateBroadcaster
+
+
+    
+    planar_drive:
+      type: planar_move_controller/PlanarMoveController
+
+  
+planar_drive:
+  ros__parameters:
+    joints: 
+     - base_front_right_wheel_joint
+     - base_front_left_wheel_joint
+     - base_back_right_wheel_joint
+     - base_back_left_wheel_joint
+
+    
+    command_interfaces:
+      - velocity
+
+    
+    state_interfaces:
+      - velocity
+      - position
